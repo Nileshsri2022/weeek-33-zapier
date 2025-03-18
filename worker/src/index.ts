@@ -9,6 +9,7 @@ async function main(){
   await consumer.connect();
   await consumer.subscribe({topic:TOPIC_NAME,fromBeginning:true});
   await consumer.run({
+    autoCommit:false,
     eachMessage:async ({topic,partition,message})=>{
       console.log({
         partition,
@@ -16,7 +17,14 @@ async function main(){
         value:message.value?.toString(),
       })
       // ideally you sendEmail here
-      await new Promise(r=>setTimeout(r,1000));
+      await new Promise(r=>setTimeout(r,5000));
+      console.log("processing done!")
+      //ack here
+      await consumer.commitOffsets([{
+        topic:TOPIC_NAME,
+        partition:partition,
+        offset:(parseInt(message.offset)+1).toString()
+      }])
     },
   })
 }
