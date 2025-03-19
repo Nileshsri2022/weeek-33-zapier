@@ -17,7 +17,7 @@ async function main(){
         value:message.value?.toString(),
       })
       // ideally you sendEmail here
-      await new Promise(r=>setTimeout(r,5000));
+      await new Promise(r=>setTimeout(r,500));
       console.log("processing done!")
       //ack here
       await consumer.commitOffsets([{
