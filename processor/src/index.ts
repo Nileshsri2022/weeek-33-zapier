@@ -15,23 +15,27 @@ async function main(){
       where:{},
       take:10
     })
+    console.log(pendingRows);
 
-      producer.send({
+      const send= producer.send({
         topic:TOPIC_NAME,
         messages:
           pendingRows.map(r =>{
             return {
-              value:r.zapRunId
+              value:JSON.stringify({zapRunId:r.zapRunId,stage:0})
             }
           })
       })
-      await client.zapRunOutbox.deleteMany({
+      console.log(send);
+      const deleteMany=await client.zapRunOutbox.deleteMany({
         where:{
           id:{
             in:pendingRows.map(x=>x.id)
           }
         }
       })
+      await new Promise(resolve=>setTimeout(resolve,3000));
+      console.log(deleteMany);
   }
 }
 main();

@@ -1,5 +1,4 @@
 
-
 import { Router } from "express";
 import { prismaClient } from "../db";
 
@@ -10,6 +9,6 @@ router.get("/available", async (req, res) => {
     res.json({
         availableTriggers
     })
-});
+}); 
 
 export const triggerRouter = router;
